@@ -92,12 +92,13 @@ public class Command implements Runnable {
 		if (config.contains("commands." + cmdStr)) {
 			config.set("commands." + cmdStr, null);
 			
-			// Try to save config
+			// Try to save configuration
 			try {
 				config.save(plugin.getDataFolder() + File.separator + "config.yml");
 			} catch (IOException e) {
 				return false;
 			}
+			
 			return true;
 		} else {
 			return false;
