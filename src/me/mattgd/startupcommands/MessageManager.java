@@ -76,7 +76,7 @@ public class MessageManager {
 		String dashes = "";
 		for (int count = 0; count < leadTrailLength; count++) dashes += "-";
 	
-		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes + "\n";
+		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes;
 		return convertColor(title);
 	}
 	

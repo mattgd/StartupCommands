@@ -52,12 +52,7 @@ public class StartupCommands extends JavaPlugin {
 		getCommand("startup").setExecutor(this); // Setup commands
 		getLogger().info("Enabled!");
 		
-		String queue = String.format("Queuing %d startup command%s.", commands.size(), commands.size() > 1 ? "s" : "");
-		getLogger().info(queue);
-		
-		for (Command cmd : commands) {
-			getServer().getScheduler().scheduleSyncDelayedTask(this, cmd, cmd.getDelay() * 20L);
-		}
+		runStartupCommands();
 	}
 	
 	/**
@@ -91,6 +86,8 @@ public class StartupCommands extends JavaPlugin {
 					MessageManager.getInstance().good(sender, commandStr); // Send the message to the sender
 				} else if (args[0].equalsIgnoreCase("help")) {
 					msg.good(sender, helpMessage());
+				} else if (args[0].equalsIgnoreCase("run")) {
+					runStartupCommands();
 				} else {
 					msg.severe(sender, "Invalid command usage. Type /startup help for proper usage information.");
 				}
@@ -125,16 +122,32 @@ public class StartupCommands extends JavaPlugin {
 		return true;
 	}
 	
+	/**
+	 * Returns a String with the StartupCommands help message.
+	 * @return a String with the StartupCommands help message.
+	 */
 	private String helpMessage() {
 		MessageManager msg = MessageManager.getInstance();
 		String msgStr = msg.messageTitle("StartupCommands Help", ChatColor.AQUA, ChatColor.YELLOW);
 		
-		msgStr += "&a/startup view &7- &aview the active startup commands and their delay"
+		msgStr += "\n&a/startup view &7- &aview the active startup commands and their delay"
 				+ "\n/startup add <command string> <delay> &7- &aadd a startup command"
 				+ "\n/startup remove <exact command string> &7- &aremove a startup command";
 		
 		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 		return msgStr;
+	}
+	
+	/**
+	 * Executes the commands in the commands ArrayList.
+	 */
+	private void runStartupCommands() {
+		String queue = String.format("Queuing %d startup command%s.", commands.size(), commands.size() > 1 ? "s" : "");
+		getLogger().info(queue);
+		
+		for (Command cmd : commands) {
+			getServer().getScheduler().scheduleSyncDelayedTask(this, cmd, cmd.getDelay() * 20L);
+		}
 	}
 	
 }
