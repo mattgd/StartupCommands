@@ -1,0 +1,16 @@
+name: StartupCommands
+version: 0.0.1
+main: me.mattgd.startupcommands.StartupCommands
+author: mattgd
+description: A plugin for running commands on server start.
+
+commands:
+   startup:
+      description: Manage the StartupCommands plugin settings.
+      usage: /<command> [args]
+      permission: startupcommands.manage
+      aliases: [startupcommands, startupcommand, startupcmd]
+permissions:
+   startupcommands.manage:
+      description: Allows you to manage the StartupCommands plugin settings
+      default: op
