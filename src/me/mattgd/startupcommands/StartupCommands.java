@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -75,18 +76,65 @@ public class StartupCommands extends JavaPlugin {
 	 * @return true always
 	 */
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
+		MessageManager msg = MessageManager.getInstance();
+		
 		if (cmd.getName().equalsIgnoreCase("startup")) {
 			if (args.length == 1) {
-				//TODO: View commands
+				if (args[0].equalsIgnoreCase("view")) {
+					String commandStr = msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW);
+					
+					for (Command command : commands) {
+						commandStr += String.format("%n&a%s &7(%ds delay)", command.getCommand(), command.getDelay());
+					}
+					
+					commandStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
+					MessageManager.getInstance().good(sender, commandStr); // Send the message to the sender
+				} else if (args[0].equalsIgnoreCase("help")) {
+					msg.good(sender, helpMessage());
+				} else {
+					msg.severe(sender, "Invalid command usage. Type /startup help for proper usage information.");
+				}
 			} else if (args.length > 1) {
-				//TODO: Add command
-				//TODO: Remove command
+				if (args[0].equalsIgnoreCase("add")) {
+					int delay = 0;
+					String cmdStr = msg.assembleMessage(args, 2, args.length);
+					
+					try {
+						delay = Integer.parseInt(args[1]);
+					} catch (NumberFormatException e) {
+						cmdStr = msg.assembleMessage(args, 1, args.length);
+					}
+					
+					Command command = new Command(cmdStr, delay);
+					Command.addCommand(this, command);
+					msg.good(sender, "Added startup command with delay " + delay + "s: " + cmdStr);
+				} else if (args[0].equalsIgnoreCase("remove")) {
+					String cmdStr = msg.assembleMessage(args, 1, args.length);
+					
+					if (Command.removeCommand(this, cmdStr)) {
+						msg.info(sender, "Removed startup command: " + cmdStr);
+					} else {
+						msg.severe(sender, "Could not remove startup command: " + cmdStr);
+					}
+				}
 			} else {
-				//TODO: Display command help
+				msg.good(sender, helpMessage());
 			}
 		}
 		
 		return true;
+	}
+	
+	private String helpMessage() {
+		MessageManager msg = MessageManager.getInstance();
+		String msgStr = msg.messageTitle("StartupCommands Help", ChatColor.AQUA, ChatColor.YELLOW);
+		
+		msgStr += "&a/startup view &7- &aview the active startup commands and their delay"
+				+ "\n/startup add <command string> <delay> &7- &aadd a startup command"
+				+ "\n/startup remove <exact command string> &7- &aremove a startup command";
+		
+		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
+		return msgStr;
 	}
 	
 }

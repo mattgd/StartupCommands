@@ -3,7 +3,11 @@
  */
 package me.mattgd.startupcommands;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * Object container for a command that is run on startup.
@@ -60,6 +64,44 @@ public class Command implements Runnable {
 	public void run() {
 		Bukkit.getServer().getLogger().info("[StartupCommands] Executing command: " + getCommand());
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), getCommand());
+	}
+	
+	/**
+	 * Static method for adding a command to the configuration.
+	 * @param command the command to add
+	 */
+	public static void addCommand(StartupCommands plugin, Command cmd) {
+		FileConfiguration config = plugin.getConfig();
+		
+		config.set("commands." + cmd.getCommand() + ".delay", cmd.getDelay());
+		
+		try {
+			config.save(plugin.getDataFolder() + File.separator + "config.yml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Static method for removing a command from the configuration.
+	 * @param command the command to remove
+	 */
+	public static boolean removeCommand(StartupCommands plugin, String cmdStr) {
+		FileConfiguration config = plugin.getConfig();
+		
+		if (config.contains("commands." + cmdStr)) {
+			config.set("commands." + cmdStr, null);
+			
+			// Try to save config
+			try {
+				config.save(plugin.getDataFolder() + File.separator + "config.yml");
+			} catch (IOException e) {
+				return false;
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
