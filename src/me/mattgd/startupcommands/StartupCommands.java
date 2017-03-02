@@ -97,6 +97,7 @@ public class StartupCommands extends JavaPlugin {
 					int delay = 0;
 					boolean hasDelay = false;
 					
+					// Check if the delay is an integer
 					if (isInteger(args[1])) {
 						delay = Integer.parseInt(args[1]);
 						hasDelay = true;

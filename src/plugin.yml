@@ -1,5 +1,5 @@
 name: StartupCommands
-version: 0.0.1
+version: 0.0.2
 main: me.mattgd.startupcommands.StartupCommands
 author: mattgd
 description: A plugin for running commands on server start.
