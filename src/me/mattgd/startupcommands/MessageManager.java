@@ -74,10 +74,12 @@ public class MessageManager {
 	public String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
 		int leadTrailLength = (int) (53 - title.length()) / 2;
 		String dashes = "";
-		for (int count = 0; count < leadTrailLength; count++) dashes += "-";
+		
+		for (int count = 0; count < leadTrailLength; count++)
+			dashes += "-";
 	
 		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes;
-		return convertColor(title);
+		return title.trim();
 	}
 	
 	/**

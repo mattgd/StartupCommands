@@ -80,6 +80,7 @@ public class StartupCommands extends JavaPlugin {
 					
 					for (Command command : commands) {
 						commandStr += String.format("%n&a%s &7(%ds delay)", command.getCommand(), command.getDelay());
+						commandStr = commandStr.replaceAll("\\r", "");
 					}
 					
 					commandStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
@@ -138,8 +139,8 @@ public class StartupCommands extends JavaPlugin {
 		String msgStr = msg.messageTitle("StartupCommands Help", ChatColor.AQUA, ChatColor.YELLOW);
 		
 		msgStr += "\n&a/startup view &7- &aview the active startup commands and their delay"
-				+ "\n/startup add <command string> <delay> &7- &aadd a startup command"
-				+ "\n/startup remove <exact command string> &7- &aremove a startup command";
+				+ "\n&a/startup add <command string> <delay> &7- &aadd a startup command"
+				+ "\n&a/startup remove <exact command string> &7- &aremove a startup command";
 		
 		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 		return msgStr;
