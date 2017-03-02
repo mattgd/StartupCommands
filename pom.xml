@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>StartupCommands</groupId>
   <artifactId>StartupCommands</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -11,6 +11,14 @@
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
+      </resource>
+      <resource>
+        <targetPath>.</targetPath>
+        <filtering>true</filtering>
+        <directory>${basedir}/src/</directory>
+        <includes>
+          <include>plugin.yml</include>
+        </includes>
       </resource>
     </resources>
     <plugins>
