@@ -93,12 +93,18 @@ public class StartupCommands extends JavaPlugin {
 				}
 			} else if (args.length > 1) {
 				if (args[0].equalsIgnoreCase("add")) {
+					String cmdStr;
 					int delay = 0;
-					String cmdStr = msg.assembleMessage(args, 2, args.length);
+					boolean hasDelay = false;
 					
-					try {
+					if (isInteger(args[1])) {
 						delay = Integer.parseInt(args[1]);
-					} catch (NumberFormatException e) {
+						hasDelay = true;
+					}
+					
+					if (args.length >= 2 && hasDelay) {
+						cmdStr = msg.assembleMessage(args, 2, args.length);
+					} else {
 						cmdStr = msg.assembleMessage(args, 1, args.length);
 					}
 					
@@ -148,6 +154,24 @@ public class StartupCommands extends JavaPlugin {
 		for (Command cmd : commands) {
 			getServer().getScheduler().scheduleSyncDelayedTask(this, cmd, cmd.getDelay() * 20L);
 		}
+	}
+	
+	/**
+	 * Returns the List of startup commands.
+	 * @return the List of startup commands.
+	 */
+	public List<Command> getCommands() {
+		return commands;
+	}
+	
+	private boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 }

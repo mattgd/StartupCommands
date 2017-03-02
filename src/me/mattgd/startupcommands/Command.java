@@ -67,10 +67,13 @@ public class Command implements Runnable {
 	}
 	
 	/**
-	 * Static method for adding a command to the configuration.
+	 * Static method for adding a command to the commands List and the
+	 * plugin configuration.
 	 * @param command the command to add
 	 */
 	public static void addCommand(StartupCommands plugin, Command cmd) {
+		plugin.getCommands().add(cmd); // Add Command to commands List
+		
 		FileConfiguration config = plugin.getConfig();
 		
 		config.set("commands." + cmd.getCommand() + ".delay", cmd.getDelay());
