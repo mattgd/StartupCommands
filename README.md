@@ -1,4 +1,6 @@
+<img width="100" src="/project_docs/StartupCommandsLogo.png"></a>
 # StartupCommands
+
 StartupCommands is a Minecraft server plugin that automatically runs commands on startup with an optional delay.
 
 ## Config
