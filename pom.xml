@@ -54,4 +54,11 @@
             <scope>provided</scope>
     </dependency>
   </dependencies>
+  <name>StartupCommands</name>
+  <url>https://github.com/mattgd/StartupCommands</url>
+  <description>StartupCommands is a Minecraft server plugin that automatically runs commands on startup with an optional delay.</description>
+  <issueManagement>
+  	<system>GitHub</system>
+  	<url>https://github.com/mattgd/StartupCommands/issues</url>
+  </issueManagement>
 </project>
