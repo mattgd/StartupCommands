@@ -1,10 +1,8 @@
-/**
- * 
- */
 package me.mattgd.startupcommands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,18 +22,22 @@ public class Command implements Runnable {
 	private int delay;
 	
 	/**
-	 * Contructs a new Command object with the specified command and delay.
+	 * Constructs a new Command object with the specified command and delay.
 	 * @param command the command the run
 	 * @param delay the amount of seconds to wait after startup before running
 	 * the command.
+	 * @throws IllegalArgumentException if the command String is null
 	 */
 	public Command(String command, int delay) {
+		if (command == null)
+			throw new IllegalArgumentException("Command string cannot be null.");
+		
 		this.command = command;
 		this.delay = delay;
 	}
 	
 	/**
-	 * Contructs a new Command object with the specified command and a default delay.
+	 * Constructs a new Command object with the specified command and a default delay.
 	 * @param command the command the run
 	 */
 	public Command(String command) {
@@ -62,7 +64,7 @@ public class Command implements Runnable {
 	 * Run the command.
 	 */
 	public void run() {
-		Bukkit.getServer().getLogger().info("[StartupCommands] Executing command: " + getCommand());
+		Bukkit.getServer().getLogger().info("[StartupCommands] Executing command: " + command);
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), getCommand());
 	}
 	
@@ -87,25 +89,65 @@ public class Command implements Runnable {
 	
 	/**
 	 * Static method for removing a command from the configuration.
-	 * @param command the command to remove
+	 * @param removeStr The String of the command to remove. If it is an Integer
+	 * the command will be removed by index, otherwise, the method looks for a matching
+	 * command String.
 	 */
-	public static boolean removeCommand(StartupCommands plugin, String cmdStr) {
+	public static String removeCommand(StartupCommands plugin, String removeStr) {
 		FileConfiguration config = plugin.getConfig();
-		
-		if (config.contains("commands." + cmdStr)) {
-			config.set("commands." + cmdStr, null);
+
+		// Find the command String if removeStr is an Integer
+		if (StartupCommands.isInteger(removeStr)) {
+			List<Command> commands = plugin.getCommands();
+			int index = Integer.parseInt(removeStr) - 1;
+			
+			// Ensure index is valid
+			if (index < 0 || index > commands.size() - 1) {
+				throw new IllegalArgumentException("Index must be greater than 0 and less than the number of startup commands.");
+			}
+			
+			removeStr = plugin.getCommands().remove(index).getCommand();
+		}
+
+		if (config.contains("commands." + removeStr)) {
+			config.set("commands." + removeStr, null);
 			
 			// Try to save configuration
 			try {
 				config.save(plugin.getDataFolder() + File.separator + "config.yml");
 			} catch (IOException e) {
-				return false;
+				throw new IllegalArgumentException("Could not save configuration file.");
 			}
 			
-			return true;
+			return removeStr;
 		} else {
-			return false;
+			throw new IllegalArgumentException("Could not identify command to remove by " + removeStr + ".");
 		}
+	}
+	
+	/**
+	 * Loads all of the startup commands from the plugin's configuration file.
+	 * @param plugin the StartupCommands plugin instance
+	 */
+	public static void loadCommands(StartupCommands plugin) {
+		FileConfiguration config = plugin.getConfig();
+ 		
+ 		if (config.getConfigurationSection("commands") == null) {
+ 			plugin.getLogger().info("There are no startup commands present.");
+ 		} else {
+ 			int delay = 0;
+
+ 			for (String command : config.getConfigurationSection("commands").getKeys(false)) {
+ 				delay = config.getInt("commands." + command + ".delay", 0);
+ 				
+ 				// Try to create the command
+ 				try {
+ 					plugin.getCommands().add(new Command(command, delay));
+ 				} catch (IllegalArgumentException e) {
+ 					plugin.getLogger().severe(e.getMessage());
+ 				}
+ 	 		}
+ 		}
 	}
 	
 }

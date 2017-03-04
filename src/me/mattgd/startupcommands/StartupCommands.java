@@ -1,6 +1,3 @@
-/**
- * 
- */
 package me.mattgd.startupcommands;
 
 import java.util.ArrayList;
@@ -9,7 +6,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -27,27 +23,9 @@ public class StartupCommands extends JavaPlugin {
      */
 	@Override
 	public void onEnable() {
-		 // Configuration
- 		getConfig().options().copyDefaults(true);
- 		saveConfig();
- 		
- 		FileConfiguration config = getConfig();
- 		
- 		if (config.getConfigurationSection("commands") == null) {
- 			getLogger().info("There are no startup commands present.");
- 		} else {
- 			int delay = 0;
- 			
- 			for (String command : config.getConfigurationSection("commands").getKeys(false)) {
- 				delay = config.getInt("commands." + command + ".delay");
- 				
- 	 			if (delay > -1) {
- 	 				commands.add(new Command(command, delay));
- 	 			} else {
- 	 				commands.add(new Command(command));
- 	 			}
- 	 		}
- 		}
+ 		saveDefaultConfig(); // Create default the configuration if config.yml doesn't exist
+		
+ 		Command.loadCommands(this); // Load the startup command list
  		
 		getCommand("startup").setExecutor(this); // Setup commands
 		getLogger().info("Enabled!");
@@ -76,14 +54,23 @@ public class StartupCommands extends JavaPlugin {
 		if (cmd.getName().equalsIgnoreCase("startup")) {
 			if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("view")) {
-					String commandStr = msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW);
+					String commandStr;
 					
-					for (Command command : commands) {
-						commandStr += String.format("%n&a%s &7(%ds delay)", command.getCommand(), command.getDelay());
-						commandStr = commandStr.replaceAll("\\r", "");
+					if (commands.isEmpty()) {
+						commandStr = "&eThere are currently no startup commands configured.";
+					} else {
+						commandStr = msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW);
+						
+						int index = 1;
+						for (Command command : commands) {
+							commandStr += String.format("%n&e%s &7- &a%s &7(%ds delay)", index, command.getCommand(), command.getDelay());
+							commandStr = commandStr.replaceAll("\\r", "");
+							index++;
+						}
+						
+						commandStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 					}
 					
-					commandStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 					MessageManager.getInstance().good(sender, commandStr); // Send the message to the sender
 				} else if (args[0].equalsIgnoreCase("help")) {
 					msg.good(sender, helpMessage());
@@ -110,16 +97,20 @@ public class StartupCommands extends JavaPlugin {
 						cmdStr = msg.assembleMessage(args, 1, args.length);
 					}
 					
-					Command command = new Command(cmdStr, delay);
-					Command.addCommand(this, command);
-					msg.good(sender, "Added startup command with delay " + delay + "s: " + cmdStr);
+					try {
+						Command command = new Command(cmdStr, delay);
+						Command.addCommand(this, command);
+						msg.good(sender, "Added startup command with delay " + delay + "s: " + cmdStr);
+					} catch (IllegalArgumentException e) {
+						msg.severe(sender, e.getMessage());
+					}
 				} else if (args[0].equalsIgnoreCase("remove")) {
-					String cmdStr = msg.assembleMessage(args, 1, args.length);
+					String removeStr = msg.assembleMessage(args, 1, args.length);
 					
-					if (Command.removeCommand(this, cmdStr)) {
-						msg.info(sender, "Removed startup command: " + cmdStr);
-					} else {
-						msg.severe(sender, "Could not remove startup command: " + cmdStr);
+					try {
+						msg.info(sender, "Removed startup command: &a" + Command.removeCommand(this, removeStr));
+					} catch (IllegalArgumentException e) {
+						msg.severe(sender, e.getMessage());
 					}
 				}
 			} else {
@@ -150,7 +141,7 @@ public class StartupCommands extends JavaPlugin {
 	 * Executes the commands in the commands ArrayList.
 	 */
 	private void runStartupCommands() {
-		String queue = String.format("Queuing %d startup command%s.", commands.size(), commands.size() > 1 ? "s" : "");
+		String queue = String.format("Queuing %d startup command%s.", commands.size(), commands.size() == 1 ? "" : "s");
 		getLogger().info(queue);
 		
 		for (Command cmd : commands) {
@@ -166,7 +157,12 @@ public class StartupCommands extends JavaPlugin {
 		return commands;
 	}
 	
-	private boolean isInteger(String s) {
+	/**
+	 * Returns true if the String s can be parsed as an integer, false otherwise.
+	 * @param s The String to parse to an Integer.
+	 * @return true if the String s can be parsed as an integer, false otherwise.
+	 */
+	public static boolean isInteger(String s) {
 		try {
 			Integer.parseInt(s);
 		} catch (NumberFormatException e) {

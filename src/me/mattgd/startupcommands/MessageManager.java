@@ -58,7 +58,7 @@ public class MessageManager {
 	 * @param msg the message to convert
 	 * @return the converted message
 	 */
-	private String convertColor(String msg) {
+	public String convertColor(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
 	
@@ -79,7 +79,7 @@ public class MessageManager {
 			dashes += "-";
 	
 		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes;
-		return title.trim();
+		return title;
 	}
 	
 	/**
