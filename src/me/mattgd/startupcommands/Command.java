@@ -71,7 +71,9 @@ public class Command implements Runnable {
 	/**
 	 * Static method for adding a command to the commands List and the
 	 * plugin configuration.
-	 * @param command the command to add
+	 * @param plugin The StartupCommands instance.
+	 * @param cmd The command to add.
+	 * @throws IllegalArgumentException if the configuration cannot be saved.
 	 */
 	public static void addCommand(StartupCommands plugin, Command cmd) {
 		plugin.getCommands().add(cmd); // Add Command to commands List
@@ -83,15 +85,20 @@ public class Command implements Runnable {
 		try {
 			config.save(plugin.getDataFolder() + File.separator + "config.yml");
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Could not save configuration file.");
 		}
 	}
 	
 	/**
 	 * Static method for removing a command from the configuration.
+	 * @param plugin The StartupCommands instance.
 	 * @param removeStr The String of the command to remove. If it is an Integer
 	 * the command will be removed by index, otherwise, the method looks for a matching
 	 * command String.
+	 * @return removeStr The command String of the removed command.
+	 * @throws IllegalArgumentException if the command doesn't exist, if the index provided 
+	 * is less than zero or greater than commands.size() - 1, or if the configuration file 
+	 * cannot be saved.
 	 */
 	public static String removeCommand(StartupCommands plugin, String removeStr) {
 		FileConfiguration config = plugin.getConfig();
