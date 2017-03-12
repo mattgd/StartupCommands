@@ -34,12 +34,12 @@ public class StartupCommands extends JavaPlugin {
 	}
 	
 	/**
-     * Disable the Foundation plugin.
+     * Disable the StartupCommands plugin.
      */
 	@Override
 	public void onDisable() {       
         Bukkit.getScheduler().cancelAllTasks(); // Cancel scheduled tasks
-		this.getConfig().options().copyDefaults(true);
+		getConfig().options().copyDefaults(true);
 		getLogger().info("Disabled!");
 	}
 	
