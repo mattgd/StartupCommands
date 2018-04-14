@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests the {@link me.mattgd.startupcommands.StartupCommands} class.
+ *
+ * @author mattgd
+ */
 public class StartupCommandsTest {
 
     /**

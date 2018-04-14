@@ -5,6 +5,11 @@ import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Manages sending and compiling of messages.
+ *
+ * @author mattgd
+ */
 public class MessageManager {
 	
 	/** Message title/trail dash length */
@@ -93,7 +98,7 @@ public class MessageManager {
 	 * @return a line of dashes as a message footer
 	 */
 	String messageTrail(ChatColor color) {
-		StringBuilder trail = new StringBuilder(color + "\n");
+		StringBuilder trail = new StringBuilder("\n" + color);
 		
 		for (int i = 0; i < DASH_LENGTH; i++) {
 			trail.append("-");
