@@ -1,10 +1,19 @@
 package me.mattgd.startupcommands;
 
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Manages sending and compiling of messages.
+ *
+ * @author mattgd
+ */
 public class MessageManager {
 	
+	/** Message title/trail dash length */
+	private static final int DASH_LENGTH = 53;
 	/** The MessageManager instance */
 	private static MessageManager instance = new MessageManager();
 	
@@ -12,7 +21,7 @@ public class MessageManager {
 	 * Returns the MessageManager instance.
 	 * @return the MessageManager instance.
 	 */
-	public static MessageManager getInstance() {
+	static MessageManager getInstance() {
 		return instance;
 	}
 	
@@ -21,7 +30,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void info(CommandSender s, String msg) {
+	void info(CommandSender s, String msg) {
 		msg(s, ChatColor.YELLOW, msg);
 	}
 	
@@ -30,7 +39,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void severe(CommandSender s, String msg) {
+	void severe(CommandSender s, String msg) {
 		msg(s, ChatColor.RED, convertColor(msg));
 	}
 	
@@ -39,7 +48,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void good(CommandSender s, String msg) {
+	void good(CommandSender s, String msg) {
 		msg(s, ChatColor.GREEN, convertColor(msg));
 	}
 	
@@ -58,7 +67,7 @@ public class MessageManager {
 	 * @param msg the message to convert
 	 * @return the converted message
 	 */
-	public String convertColor(String msg) {
+	private String convertColor(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
 	
@@ -71,14 +80,15 @@ public class MessageManager {
 	 * @param dashColor the color of the dashes
 	 * @return the title header
 	 */
-	public String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
-		int leadTrailLength = (int) (53 - title.length()) / 2;
-		String dashes = "";
+	String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
+		int leadTrailLength = (DASH_LENGTH - title.length()) / 2;
+		StringBuilder dashes = new StringBuilder();
 		
-		for (int count = 0; count < leadTrailLength; count++)
-			dashes += "-";
+		for (int i = 0; i < leadTrailLength; i++) {
+			dashes.append("-");
+		}
 	
-		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes;
+		title = dashColor + dashes.toString() + "[" + textColor + title + dashColor + "]" + dashes.toString();
 		return title;
 	}
 	
@@ -87,13 +97,14 @@ public class MessageManager {
 	 * @param color the ChatColor of the dashes
 	 * @return a line of dashes as a message footer
 	 */
-	public String messageTrail(ChatColor color) {
-		String msg = color + "\n";
-		for (int i = 0; i < 53; i++) {
-			msg += "-";
+	String messageTrail(ChatColor color) {
+		StringBuilder trail = new StringBuilder("\n" + color);
+		
+		for (int i = 0; i < DASH_LENGTH; i++) {
+			trail.append("-");
 		}
 		
-		return convertColor(msg);
+		return convertColor(trail.toString());
 	}
 	
 	/**
@@ -104,15 +115,9 @@ public class MessageManager {
 	 * the String at this index (works like substring())
 	 * @return a String of all of the String arguments from start to end
 	 */
-	public String assembleMessage(String[] args, int start, int end) {
-		String message = "";
-		
-		for (int i = start; i < end; i++) {
-			message += args[i] + " ";
-		}
-		
-		message = message.substring(0, message.length() - 1); // Remove trailing space
-		return message;
+	String assembleMessage(String[] args, int start, int end) {
+		args = Arrays.copyOfRange(args, start, end);
+		return String.join(" ", args);
 	}
 	
 }
