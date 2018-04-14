@@ -1,3 +1,6 @@
+# Add commands below to execute on server startup/reload.
+# delay is the number of seconds to wait before executing. Use 0 for immediate execution.
+# notify-on-exec is a boolean value to enable/disable console notifications on command execution.
 commands:
   gamemode 1 TestPlayer:
     delay: 10

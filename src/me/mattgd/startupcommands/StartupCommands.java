@@ -47,7 +47,9 @@ public class StartupCommands extends JavaPlugin {
 		
 		if (cmd.getName().equalsIgnoreCase("startup")) {
 			if (args.length == 1) {
-				if (args[0].equalsIgnoreCase("view")) {
+			    String subCmd = args[0];
+
+				if (subCmd.equalsIgnoreCase("view")) {
 					StringBuilder commandList = new StringBuilder();
 					
 					if (cmdManager.getCommands().isEmpty()) {
@@ -68,24 +70,26 @@ public class StartupCommands extends JavaPlugin {
 					}
 					
 					MessageManager.getInstance().good(sender, commandList.toString()); // Send the message to the sender
-				} else if (args[0].equalsIgnoreCase("help")) {
+				} else if (subCmd.equalsIgnoreCase("help")) {
 					msg.good(sender, helpMessage());
-				} else if (args[0].equalsIgnoreCase("run")) {
+				} else if (subCmd.equalsIgnoreCase("run")) {
 					cmdManager.runStartupCommands();
 				} else {
 					msg.severe(sender, "Invalid command usage. Type /startup help for proper usage information.");
 				}
 			} else if (args.length > 1) {
-				if (args[0].equalsIgnoreCase("add")) {
+                String subCmd = args[0];
+
+				if (subCmd.equalsIgnoreCase("add") || subCmd.equalsIgnoreCase("create")) {
 					String cmdStr;
 					int delay;
 					boolean hasDelay = false;
 					
 					// Check if a delay was provided
-                    try {
+                    if (isInteger(args[1])) {
                         delay = Integer.parseInt(args[1]);
                         hasDelay = true;
-                    } catch (NumberFormatException e) {
+                    } else {
                         delay = Command.DEFAULT_DELAY;
                     }
 
@@ -96,11 +100,11 @@ public class StartupCommands extends JavaPlugin {
 					try {
 						Command command = new Command(cmdStr, delay);
                         cmdManager.addCommand(command);
-						msg.good(sender, "Added startup command with delay " + delay + "s: " + cmdStr);
+						msg.info(sender, "Added startup command with delay &7" + delay + "s&e: &a" + cmdStr);
 					} catch (IllegalArgumentException e) {
 						msg.severe(sender, e.getMessage());
 					}
-				} else if (args[0].equalsIgnoreCase("remove")) {
+				} else if (subCmd.equalsIgnoreCase("remove") || subCmd.equalsIgnoreCase("delete")) {
 					String removeStr = msg.assembleMessage(args, 1, args.length);
 					
 					try {
@@ -132,5 +136,20 @@ public class StartupCommands extends JavaPlugin {
 		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 		return msgStr;
 	}
+
+    /**
+     * Returns true if the String s can be parsed as an integer, false otherwise.
+     * @param s The String to parse to an Integer.
+     * @return true if the String s can be parsed as an integer, false otherwise.
+     */
+    static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
 	
 }
