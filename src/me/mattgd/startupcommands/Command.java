@@ -28,8 +28,8 @@ public class Command implements Runnable {
 	 * @throws IllegalArgumentException if the command String is null
 	 */
 	public Command(String command, int delay, boolean notifyOnExec) {
-		if (command == null)
-			throw new IllegalArgumentException("Command string cannot be null.");
+		if (command == null || command.isEmpty())
+			throw new IllegalArgumentException("Command string cannot be null or empty.");
 		
 		this.commandStr = command;
 		this.delay = delay;
