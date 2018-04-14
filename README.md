@@ -23,8 +23,8 @@ Please note that normal characters that required escaping in YAML will need to b
 ## Commands
 - /startup help - _display StartupCommands command help_
 - /startup view - _view the current startup commands_
-- /startup add (optional delay in seconds) <command string> - _add a command to the startup command list_
-- /startup remove <command string> - _remove a command from the startup command list_
+- /startup add/create (optional delay in seconds) <command string> - _add a command to the startup command list_
+- /startup remove/delete <command string> - _remove a command from the startup command list_
 - /startup run - _manually run the startup commands in the configuration_
 
 The permission required for using these commands is: _startupcommands.manage_
