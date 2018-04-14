@@ -24,7 +24,7 @@ public class StartupCommands extends JavaPlugin {
         cmdManager = new CommandManager(this);
 		getCommand("startup").setExecutor(this); // Setup commands
 
-        cmdManager.runStartupCommands();
+        cmdManager.runStartupCommands(); // Run all startup commands
 	}
 	
 	/**
