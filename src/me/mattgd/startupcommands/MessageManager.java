@@ -16,7 +16,7 @@ public class MessageManager {
 	 * Returns the MessageManager instance.
 	 * @return the MessageManager instance.
 	 */
-	public static MessageManager getInstance() {
+	static MessageManager getInstance() {
 		return instance;
 	}
 	
@@ -25,7 +25,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void info(CommandSender s, String msg) {
+	void info(CommandSender s, String msg) {
 		msg(s, ChatColor.YELLOW, msg);
 	}
 	
@@ -34,7 +34,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void severe(CommandSender s, String msg) {
+	void severe(CommandSender s, String msg) {
 		msg(s, ChatColor.RED, convertColor(msg));
 	}
 	
@@ -43,7 +43,7 @@ public class MessageManager {
 	 * @param s the message recipient
 	 * @param msg the message
 	 */
-	public void good(CommandSender s, String msg) {
+	void good(CommandSender s, String msg) {
 		msg(s, ChatColor.GREEN, convertColor(msg));
 	}
 	
@@ -62,7 +62,7 @@ public class MessageManager {
 	 * @param msg the message to convert
 	 * @return the converted message
 	 */
-	public String convertColor(String msg) {
+	private String convertColor(String msg) {
 		return ChatColor.translateAlternateColorCodes('&', msg);
 	}
 	
@@ -75,7 +75,7 @@ public class MessageManager {
 	 * @param dashColor the color of the dashes
 	 * @return the title header
 	 */
-	public String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
+	String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
 		int leadTrailLength = (DASH_LENGTH - title.length()) / 2;
 		StringBuilder dashes = new StringBuilder();
 		
@@ -92,7 +92,7 @@ public class MessageManager {
 	 * @param color the ChatColor of the dashes
 	 * @return a line of dashes as a message footer
 	 */
-	public String messageTrail(ChatColor color) {
+	String messageTrail(ChatColor color) {
 		StringBuilder trail = new StringBuilder(color + "\n");
 		
 		for (int i = 0; i < DASH_LENGTH; i++) {
@@ -110,7 +110,7 @@ public class MessageManager {
 	 * the String at this index (works like substring())
 	 * @return a String of all of the String arguments from start to end
 	 */
-	public String assembleMessage(String[] args, int start, int end) {
+	String assembleMessage(String[] args, int start, int end) {
 		args = Arrays.copyOfRange(args, start, end);
 		return String.join(" ", args);
 	}

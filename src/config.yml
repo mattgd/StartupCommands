@@ -1,12 +1,7 @@
-# Whether or not to display 'Executing command'
-# in the console when executing a command.
-notify-on-exec: true
-# Default command delay in seconds
-default-delay: 2
-
 commands:
   gamemode 1 TestPlayer:
     delay: 10
+    notify-on-exec: false
   ban TestPlayer:
     delay: 0
   say This is a test message with StartupCommands:

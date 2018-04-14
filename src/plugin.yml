@@ -9,7 +9,7 @@ commands:
       description: Manage the StartupCommands plugin settings.
       usage: /<command> [args]
       permission: startupcommands.manage
-      aliases: [startupcommands, startupcommand, startupcmd]
+      aliases: [startupcommands, startupcommand, startupcmd, sc]
 permissions:
    startupcommands.manage:
       description: Allows you to manage the StartupCommands plugin settings
