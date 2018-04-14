@@ -103,6 +103,45 @@ public class CommandManager {
     }
 
     /**
+     * Method for setting a command's delay in seconds.
+     * @param index The index of the command (zero-indexed).
+     * @param delay The delay value in seconds to set.
+     * @throws IllegalArgumentException if the command doesn't exist, if the index provided
+     * is less than zero or greater than commands.size() - 1, or if the configuration file
+     * cannot be saved.
+     */
+    void setCommandDelay(int index, int delay) {
+        Command cmd = getCommand(index);
+        String cmdStr = cmd.getCommand();
+        cmd.setDelay(delay);
+
+        FileConfiguration config = plugin.getConfig();
+
+        if (config.contains(CMD_CONFIG_PREFIX + cmdStr)) {
+            config.set(CMD_CONFIG_PREFIX + cmdStr + ".delay", delay);
+            saveCommandConfig();
+        } else {
+            throw new IllegalArgumentException("Could not identify command to set the delay of by " + cmdStr + ".");
+        }
+    }
+
+    /**
+     * Method for get a command from the commands List.
+     * @param id The ID number of the command (1-indexed).
+     * @return The command at the provided index.
+     * @throws IllegalArgumentException if the command doesn't exist, if the index provided
+     * is less than zero or greater than commands.size() - 1.
+     */
+    private Command getCommand(int id) {
+        // Ensure index is valid
+        if (id < 1 || id > commands.size() - 1) {
+            throw new IllegalArgumentException("Index must be greater than 0 and less than the number of startup commands.");
+        }
+
+        return commands.get(id - 1);
+    }
+
+    /**
      * Loads all of the startup commands from the plugin's configuration file.
      */
     private void loadCommands() {
@@ -125,6 +164,18 @@ public class CommandManager {
                     Bukkit.getLogger().severe(e.getMessage());
                 }
             }
+        }
+    }
+
+    /**
+     * Saves the command configuration to the file.
+     * @throws IllegalArgumentException if the file cannot be saved to due an IOException.
+     */
+    private void saveCommandConfig() {
+        try {
+            plugin.getConfig().save(plugin.getDataFolder() + File.separator + "config.yml");
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not save configuration file.");
         }
     }
 
