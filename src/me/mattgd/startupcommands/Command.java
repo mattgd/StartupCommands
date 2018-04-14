@@ -28,11 +28,8 @@ public class Command implements Runnable {
 	 * @throws IllegalArgumentException if the command String is null
 	 */
 	public Command(String command, int delay, boolean notifyOnExec) {
-		if (command == null || command.isEmpty())
-			throw new IllegalArgumentException("Command string cannot be null or empty.");
-		
-		this.commandStr = command;
-		this.delay = delay;
+        setCommand(command);
+		setDelay(delay);
 		this.notifyOnExec = notifyOnExec;
 	}
 
@@ -57,10 +54,22 @@ public class Command implements Runnable {
 	 * Returns the command String.
 	 * @return the command String.
 	 */
-	public String getCommand() {
+	String getCommand() {
 		return commandStr;
 	}
-	
+
+    /**
+     * Sets the commandStr value.
+     * @param cmdStr The commandStr value to set.
+     * @throws IllegalArgumentException if cmdStr is null or empty.
+     */
+	void setCommand(String cmdStr) {
+        if (cmdStr == null || cmdStr.isEmpty())
+            throw new IllegalArgumentException("Command string cannot be null or empty.");
+
+        this.commandStr = cmdStr;
+    }
+
 	/**
 	 * Returns the command delay in seconds.
 	 * @return the command delay in seconds.
@@ -68,7 +77,15 @@ public class Command implements Runnable {
 	int getDelay() {
 		return delay;
 	}
-	
+
+    /**
+     * Sets the command delay in seconds.
+     * @param delay The delay value to set.
+     */
+    void setDelay(int delay) {
+        this.delay = delay < 0 ? 0 : delay;
+    }
+
 	/**
 	 * Run the command.
 	 */
@@ -79,5 +96,5 @@ public class Command implements Runnable {
 
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), getCommand());
 	}
-	
+
 }

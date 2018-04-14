@@ -112,7 +112,24 @@ public class StartupCommands extends JavaPlugin {
 					} catch (IllegalArgumentException e) {
 						msg.severe(sender, e.getMessage());
 					}
-				}
+                } else if (subCmd.equalsIgnoreCase("setdelay")) {
+                    // Check if an index and delay were provided
+                    if (args.length != 3 || !(isInteger(args[1]) && isInteger(args[2]))) {
+                        msg.severe(sender, "Usage: /sc setdelay <command ID> <delay in seconds>");
+                    } else {
+                        int index = Integer.parseInt(args[1]);
+                        int delay = Integer.parseInt(args[2]);
+
+                        try {
+                            cmdManager.setCommandDelay(index, delay);
+                            msg.info(sender, "Set the delay for command &7#" + index + " &eto &7" + delay + "s&e.");
+                        } catch (IllegalArgumentException ex) {
+                            msg.severe(sender, ex.getMessage());
+                        }
+                    }
+                } else {
+				    msg.severe(sender, "Invalid subcommand.");
+                }
 			} else {
 				msg.good(sender, helpMessage());
 			}

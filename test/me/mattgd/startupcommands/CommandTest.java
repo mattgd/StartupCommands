@@ -22,6 +22,9 @@ public class CommandTest {
         assertEquals(cmd.getCommand(), "say This is a test.");
         assertEquals(cmd.getDelay(), 2);
 
+        cmd.setDelay(5);
+        assertEquals(5, cmd.getDelay());
+
         // Invalid command
         try {
             new Command(null);
