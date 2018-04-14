@@ -1,10 +1,14 @@
 package me.mattgd.startupcommands;
 
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class MessageManager {
 	
+	/** Message title/trail dash length */
+	private static final int DASH_LENGTH = 53;
 	/** The MessageManager instance */
 	private static MessageManager instance = new MessageManager();
 	
@@ -72,13 +76,14 @@ public class MessageManager {
 	 * @return the title header
 	 */
 	public String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
-		int leadTrailLength = (int) (53 - title.length()) / 2;
-		String dashes = "";
+		int leadTrailLength = (DASH_LENGTH - title.length()) / 2;
+		StringBuilder dashes = new StringBuilder();
 		
-		for (int count = 0; count < leadTrailLength; count++)
-			dashes += "-";
+		for (int i = 0; i < leadTrailLength; i++) {
+			dashes.append("-");
+		}
 	
-		title = dashColor + dashes + "[" + textColor + title + dashColor + "]" + dashes;
+		title = dashColor + dashes.toString() + "[" + textColor + title + dashColor + "]" + dashes.toString();
 		return title;
 	}
 	
@@ -88,12 +93,13 @@ public class MessageManager {
 	 * @return a line of dashes as a message footer
 	 */
 	public String messageTrail(ChatColor color) {
-		String msg = color + "\n";
-		for (int i = 0; i < 53; i++) {
-			msg += "-";
+		StringBuilder trail = new StringBuilder(color + "\n");
+		
+		for (int i = 0; i < DASH_LENGTH; i++) {
+			trail.append("-");
 		}
 		
-		return convertColor(msg);
+		return convertColor(trail.toString());
 	}
 	
 	/**
@@ -105,14 +111,8 @@ public class MessageManager {
 	 * @return a String of all of the String arguments from start to end
 	 */
 	public String assembleMessage(String[] args, int start, int end) {
-		String message = "";
-		
-		for (int i = start; i < end; i++) {
-			message += args[i] + " ";
-		}
-		
-		message = message.substring(0, message.length() - 1); // Remove trailing space
-		return message;
+		args = Arrays.copyOfRange(args, start, end);
+		return String.join(" ", args);
 	}
 	
 }

@@ -16,8 +16,10 @@ public class Command implements Runnable {
 
 	/** Default delay for commands constructed without the delay parameter, two seconds */
 	private static final int DEFAULT_DELAY = 2;
+	/** The command configuration prefix */
+	private static final String CMD_CONFIG_PREFIX = "commands.";
 	/** The command to execute */
-	private String command;
+	private String commandStr;
 	/** The amount of time to delay the command after startup */
 	private int delay;
 	
@@ -32,7 +34,7 @@ public class Command implements Runnable {
 		if (command == null)
 			throw new IllegalArgumentException("Command string cannot be null.");
 		
-		this.command = command;
+		this.commandStr = command;
 		this.delay = delay;
 	}
 	
@@ -49,7 +51,7 @@ public class Command implements Runnable {
 	 * @return the command String.
 	 */
 	public String getCommand() {
-		return command;
+		return commandStr;
 	}
 	
 	/**
@@ -64,7 +66,7 @@ public class Command implements Runnable {
 	 * Run the command.
 	 */
 	public void run() {
-		Bukkit.getServer().getLogger().info("[StartupCommands] Executing command: " + command);
+		Bukkit.getServer().getLogger().info("[StartupCommands] Executing command: " + commandStr);
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), getCommand());
 	}
 	
@@ -80,7 +82,7 @@ public class Command implements Runnable {
 		
 		FileConfiguration config = plugin.getConfig();
 		
-		config.set("commands." + cmd.getCommand() + ".delay", cmd.getDelay());
+		config.set(CMD_CONFIG_PREFIX + cmd.getCommand() + ".delay", cmd.getDelay());
 		
 		try {
 			config.save(plugin.getDataFolder() + File.separator + "config.yml");
@@ -116,8 +118,8 @@ public class Command implements Runnable {
 			removeStr = plugin.getCommands().remove(index).getCommand();
 		}
 
-		if (config.contains("commands." + removeStr)) {
-			config.set("commands." + removeStr, null);
+		if (config.contains(CMD_CONFIG_PREFIX + removeStr)) {
+			config.set(CMD_CONFIG_PREFIX + removeStr, null);
 			
 			// Try to save configuration
 			try {
@@ -145,7 +147,7 @@ public class Command implements Runnable {
  			int delay = 0;
 
  			for (String command : config.getConfigurationSection("commands").getKeys(false)) {
- 				delay = config.getInt("commands." + command + ".delay", 0);
+ 				delay = config.getInt(CMD_CONFIG_PREFIX + command + ".delay", 0);
  				
  				// Try to create the command
  				try {

@@ -24,11 +24,10 @@ public class StartupCommands extends JavaPlugin {
 	@Override
 	public void onEnable() {
  		saveDefaultConfig(); // Create default the configuration if config.yml doesn't exist
-		
+ 		
  		Command.loadCommands(this); // Load the startup command list
  		
 		getCommand("startup").setExecutor(this); // Setup commands
-		getLogger().info("Enabled!");
 		
 		runStartupCommands();
 	}
@@ -40,38 +39,40 @@ public class StartupCommands extends JavaPlugin {
 	public void onDisable() {       
         Bukkit.getScheduler().cancelAllTasks(); // Cancel scheduled tasks
 		getConfig().options().copyDefaults(true);
-		getLogger().info("Disabled!");
 	}
 	
 	/**
 	 * Call the appropriate command based on player command input, or
 	 * show plugin information or reload the plugin if specified.
-	 * @return true always
+	 * @return true always.
 	 */
+	@Override
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String commandLabel, String[] args) {
 		MessageManager msg = MessageManager.getInstance();
 		
 		if (cmd.getName().equalsIgnoreCase("startup")) {
 			if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("view")) {
-					String commandStr;
+					StringBuilder commandList = new StringBuilder();
 					
 					if (commands.isEmpty()) {
-						commandStr = "&eThere are currently no startup commands configured.";
+						commandList.append("&eThere are currently no startup commands configured.");
 					} else {
-						commandStr = msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW);
+						commandList.append(msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW));
 						
 						int index = 1;
+						String cmdStr;
 						for (Command command : commands) {
-							commandStr += String.format("%n&e%s &7- &a%s &7(%ds delay)", index, command.getCommand(), command.getDelay());
-							commandStr = commandStr.replaceAll("\\r", "");
+							cmdStr = String.format("%n&e%s &7- &a%s &7(%ds delay)", index, command.getCommand(), command.getDelay());
+							cmdStr = cmdStr.replaceAll("\\r", "");
+							commandList.append(cmdStr);
 							index++;
 						}
 						
-						commandStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
+						commandList.append(msg.messageTrail(ChatColor.YELLOW)); // Add message trail
 					}
 					
-					MessageManager.getInstance().good(sender, commandStr); // Send the message to the sender
+					MessageManager.getInstance().good(sender, commandList.toString()); // Send the message to the sender
 				} else if (args[0].equalsIgnoreCase("help")) {
 					msg.good(sender, helpMessage());
 				} else if (args[0].equalsIgnoreCase("run")) {
