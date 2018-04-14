@@ -8,14 +8,16 @@ Add commands in the configuration by following the examples provided, or follow 
 
 ```
 # Add commands below to execute on server startup/reload.
-# Delay is the number of seconds to wait before executing. Use 0 for immediate execution.
+# delay is the number of seconds to wait before executing. Use 0 for immediate execution.
+# notify-on-exec is a boolean value to enable/disable console notifications on command execution.
 commands:
   gamemode 1 TestPlayer:
     delay: 10
+    notify-on-exec: false
   ban TestPlayer:
     delay: 0
-  say This is 1 test message with StartupCommands:
-    delay: 5
+  say This is a test message with StartupCommands:
+    delay: 3
 ```
 
 Please note that normal characters that required escaping in YAML will need to be escaped in the configuration.
