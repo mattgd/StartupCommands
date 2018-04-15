@@ -285,8 +285,11 @@ public class StartupCommandsTest {
         args = new String[] { "remove", "tp", "notacommand" };
         plugin.onCommand(commandSender, mockCommand, "startup", args);
 
+        args = new String[] { "remove", "-5" };
+        plugin.onCommand(commandSender, mockCommand, "startup", args);
+
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(commandSender, times(6)).sendMessage(captor.capture());
+        verify(commandSender, times(7)).sendMessage(captor.capture());
 
         // Check to see if sendMessage parameters were correct
         List<String> paramsPassed = captor.getAllValues();
@@ -294,6 +297,7 @@ public class StartupCommandsTest {
         assertEquals("§eRemoved startup command: §asay Test2", paramsPassed.get(3));
         assertEquals("§eRemoved startup command: §aban TestPlayer", paramsPassed.get(4));
         assertEquals("§cCould not identify command to remove by tp notacommand.", paramsPassed.get(5));
+        assertEquals("§cIndex must be greater than 0 and less than the number of startup commands.", paramsPassed.get(6));
     }
 
     /**
@@ -317,8 +321,11 @@ public class StartupCommandsTest {
         args = new String[] { "setdelay", "Test1", "Test2" };
         plugin.onCommand(commandSender, mockCommand, "startup", args);
 
+        args = new String[] { "setdelay", "-5", "5" };
+        plugin.onCommand(commandSender, mockCommand, "startup", args);
+
         ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-        verify(commandSender, times(5)).sendMessage(captor.capture());
+        verify(commandSender, times(6)).sendMessage(captor.capture());
 
         // Check to see if sendMessage parameters were correct
         List<String> paramsPassed = captor.getAllValues();
@@ -327,6 +334,7 @@ public class StartupCommandsTest {
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(2));
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(3));
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(4));
+        assertEquals("§cIndex must be greater than 0 and less than the number of startup commands.", paramsPassed.get(5));
     }
 
     /**
