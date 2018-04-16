@@ -16,13 +16,11 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests the {@link me.mattgd.startupcommands.Command} class.
+ * Tests the {@link Command} class.
  *
  * @author mattgd
  */
@@ -55,7 +53,7 @@ public class CommandTest {
     }
 
     /**
-     * Tests the {@link me.mattgd.startupcommands.Command} class getters and settings.
+     * Tests the {@link Command} class getters and settings.
      */
     @Test
     public void testCommand() {

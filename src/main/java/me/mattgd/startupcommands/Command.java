@@ -54,7 +54,7 @@ public class Command implements Runnable {
 	 * Returns the command String.
 	 * @return the command String.
 	 */
-	String getCommand() {
+	public String getCommand() {
 		return commandStr;
 	}
 
@@ -63,7 +63,7 @@ public class Command implements Runnable {
      * @param cmdStr The commandStr value to set.
      * @throws IllegalArgumentException if cmdStr is null or empty.
      */
-	void setCommand(String cmdStr) {
+	private void setCommand(String cmdStr) {
         if (cmdStr == null || cmdStr.isEmpty())
             throw new IllegalArgumentException("Command string cannot be null or empty.");
 
@@ -82,7 +82,7 @@ public class Command implements Runnable {
      * Sets the command delay in seconds.
      * @param delay The delay value to set.
      */
-    void setDelay(int delay) {
+	void setDelay(int delay) {
         this.delay = delay < 0 ? 0 : delay;
     }
 

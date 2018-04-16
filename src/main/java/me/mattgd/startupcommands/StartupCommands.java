@@ -1,6 +1,5 @@
 package me.mattgd.startupcommands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -21,13 +20,17 @@ public class StartupCommands extends JavaPlugin {
     /** Directory that the server is running from */
     private File serverDir = new File(System.getProperty("user.dir"));
 
-	/**
-	 * This is used for unit testing.
-	 * @param loader The PluginLoader to use.
-	 * @param description The Description file to use.
-	 * @param dataFolder The folder that other data files can be found in.
-	 * @param file The location of the plugin.
-	 */
+    public StartupCommands() {
+        super();
+    }
+
+    /**
+     * This is used for unit testing.
+     * @param loader The PluginLoader to use.
+     * @param description The Description file to use.
+     * @param dataFolder The folder that other data files can be found in.
+     * @param file The location of the plugin.
+     */
 	public StartupCommands(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
 		super(loader, description, dataFolder, file);
 	}

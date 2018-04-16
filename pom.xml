@@ -3,24 +3,28 @@
   <groupId>StartupCommands</groupId>
   <artifactId>StartupCommands</artifactId>
   <version>0.0.5</version>
+    <packaging>jar</packaging>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>${basedir}/src/</directory>
-        <includes>
-          <include>plugin.yml</include>
-        </includes>
-      </resource>
-    </resources>
+      <sourceDirectory>src/main/java</sourceDirectory>
+      <resources>
+          <resource>
+              <directory>src/main/resources</directory>
+              <!-- Keeping filtering at true here reduces plugin.yml redundancy! -->
+              <filtering>true</filtering>
+              <includes>
+                  <include>plugin.yml</include>
+              </includes>
+          </resource>
+          <resource>
+              <directory>src/main/resources</directory>
+              <!-- Keep filtering at false for other resources to prevent bad magic -->
+              <filtering>false</filtering>
+              <excludes>
+                  <exclude>**/*.java</exclude>
+                  <exclude>plugin.yml</exclude>
+              </excludes>
+          </resource>
+      </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -36,9 +40,15 @@
             <version>0.8.1</version>
             <executions>
                 <execution>
-                    <id>prepare-agent</id>
                     <goals>
                         <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>report</goal>
                     </goals>
                 </execution>
             </executions>
@@ -47,12 +57,15 @@
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.3.0</version>
-          <configuration>
-              <jacocoReports>
-                  <param>${project.reporting.outputDirectory}/${project.version}/jacoco/jacoco.xml</param>
-              </jacocoReports>
-          </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.21.0</version>
+            <configuration>
+                <argLine>${argLine}</argLine>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
   <repositories>
@@ -62,11 +75,20 @@
     </repository>
   </repositories>
   <properties>
-    <powermock.version>1.7.1</powermock.version>
+      <author>mattgd</author>
+      <mainClass>me.mattgd.startupcommands.StartupCommands</mainClass>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <powermock.version>1.7.1</powermock.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-    <dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.12</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
       <version>${powermock.version}</version>
@@ -92,6 +114,24 @@
             <version>1.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.12</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.powermock</groupId>
+          <artifactId>powermock-module-junit4</artifactId>
+          <version>1.7.1</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.powermock</groupId>
+          <artifactId>powermock-api-mockito2</artifactId>
+          <version>1.7.1</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
   <name>StartupCommands</name>
   <url>https://github.com/mattgd/StartupCommands</url>
