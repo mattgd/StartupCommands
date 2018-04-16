@@ -1,5 +1,5 @@
 <img width="100" src="/project_docs/StartupCommandsLogo.png"></a>
-# StartupCommands [![Build Status](https://travis-ci.org/mattgd/StartupCommands.svg?branch=master)](https://travis-ci.org/mattgd/StartupCommands)
+# StartupCommands [![Build Status](https://travis-ci.org/mattgd/StartupCommands.svg?branch=master)](https://travis-ci.org/mattgd/StartupCommands) [![Coverage Status](https://coveralls.io/repos/github/mattgd/StartupCommands/badge.svg?branch=master)](https://coveralls.io/github/mattgd/StartupCommands?branch=master)
 
 StartupCommands is a Minecraft server plugin that automatically runs commands on startup with an optional delay.
 

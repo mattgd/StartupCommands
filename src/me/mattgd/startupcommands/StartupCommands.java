@@ -3,7 +3,11 @@ package me.mattgd.startupcommands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+
+import java.io.File;
 
 /**
  * StartupCommands plugin main class.
@@ -14,6 +18,30 @@ public class StartupCommands extends JavaPlugin {
 
     /** The CommandManager instance */
     private CommandManager cmdManager;
+    /** Directory that the server is running from */
+    private File serverDir = new File(System.getProperty("user.dir"));
+
+	/**
+	 * This is used for unit testing.
+	 * @param loader The PluginLoader to use.
+	 * @param description The Description file to use.
+	 * @param dataFolder The folder that other data files can be found in.
+	 * @param file The location of the plugin.
+	 */
+	public StartupCommands(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+		super(loader, description, dataFolder, file);
+	}
+
+    /**
+     * Sets this server's root directory.
+     * @param newServerDirectory The new server-root
+     */
+    public void setServerDirectory(File newServerDirectory) {
+        if (!newServerDirectory.isDirectory())
+            throw new IllegalArgumentException("That's not a folder!");
+
+        this.serverDir = newServerDirectory;
+    }
 
     /**
      * Enable the StartupCommand plugin.
@@ -22,6 +50,7 @@ public class StartupCommands extends JavaPlugin {
 	public void onEnable() {
  		saveDefaultConfig(); // Create default the configuration if config.yml doesn't exist
         cmdManager = new CommandManager(this);
+
 		getCommand("startup").setExecutor(this); // Setup commands
 
         cmdManager.runStartupCommands(); // Run all startup commands
@@ -31,8 +60,8 @@ public class StartupCommands extends JavaPlugin {
      * Disable the StartupCommands plugin.
      */
 	@Override
-	public void onDisable() {       
-        Bukkit.getScheduler().cancelAllTasks(); // Cancel scheduled tasks
+	public void onDisable() {
+        getServer().getScheduler().cancelAllTasks(); // Cancel scheduled tasks
 		getConfig().options().copyDefaults(true);
 	}
 	
@@ -53,7 +82,7 @@ public class StartupCommands extends JavaPlugin {
 					StringBuilder commandList = new StringBuilder();
 					
 					if (cmdManager.getCommands().isEmpty()) {
-						commandList.append("&eThere are currently no startup commands configured.");
+						commandList.append("There are currently no startup commands configured.");
 					} else {
 						commandList.append(msg.messageTitle("Startup Commands", ChatColor.AQUA, ChatColor.YELLOW));
 						
@@ -69,8 +98,8 @@ public class StartupCommands extends JavaPlugin {
 						commandList.append(msg.messageTrail(ChatColor.YELLOW)); // Add message trail
 					}
 					
-					MessageManager.getInstance().good(sender, commandList.toString()); // Send the message to the sender
-				} else if (subCmd.equalsIgnoreCase("help")) {
+					MessageManager.getInstance().info(sender, commandList.toString()); // Send the message to the sender
+				} else if (subCmd.equalsIgnoreCase("help") || subCmd.equalsIgnoreCase("?")) {
 					msg.good(sender, helpMessage());
 				} else if (subCmd.equalsIgnoreCase("run")) {
 					cmdManager.runStartupCommands();
@@ -128,7 +157,7 @@ public class StartupCommands extends JavaPlugin {
                         }
                     }
                 } else {
-				    msg.severe(sender, "Invalid subcommand.");
+				    msg.severe(sender, "Invalid command usage. Type /startup help for proper usage information.");
                 }
 			} else {
 				msg.good(sender, helpMessage());
@@ -148,7 +177,8 @@ public class StartupCommands extends JavaPlugin {
 		
 		msgStr += "\n&a/sc view &7- &aview the active startup commands and their delay"
 				+ "\n&a/sc add <command string> <delay> &7- &aadd a startup command"
-				+ "\n&a/sc remove <exact command string> &7- &aremove a startup command";
+				+ "\n&a/sc remove <command ID or exact command string> &7- &aremove a startup command"
+                + "\n&a/sc setdelay <command ID> <delay in seconds> &7- &aset a startup command's delay";
 		
 		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
 		return msgStr;

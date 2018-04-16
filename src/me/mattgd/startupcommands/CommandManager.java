@@ -51,14 +51,9 @@ public class CommandManager {
         commands.add(cmd); // Add Command to commands List
 
         FileConfiguration config = plugin.getConfig();
-
         config.set(CMD_CONFIG_PREFIX + cmd.getCommand() + ".delay", cmd.getDelay());
 
-        try {
-            config.save(plugin.getDataFolder() + File.separator + "config.yml");
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Could not save configuration file.");
-        }
+        saveCommandConfig();
     }
 
     /**
@@ -88,13 +83,7 @@ public class CommandManager {
 
         if (config.contains(CMD_CONFIG_PREFIX + removeStr)) {
             config.set(CMD_CONFIG_PREFIX + removeStr, null);
-
-            // Try to save configuration
-            try {
-                config.save(plugin.getDataFolder() + File.separator + "config.yml");
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Could not save configuration file.");
-            }
+            saveCommandConfig();
 
             return removeStr;
         } else {
@@ -148,7 +137,7 @@ public class CommandManager {
         FileConfiguration config = plugin.getConfig();
 
         if (config.getConfigurationSection("commands") == null) {
-            Bukkit.getLogger().info("There are no startup commands present.");
+            Bukkit.getLogger().info("There are no startup commands configured.");
         } else {
             int delay;
             boolean notifyOnExec;
