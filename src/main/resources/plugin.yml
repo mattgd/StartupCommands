@@ -1,8 +1,8 @@
 name: StartupCommands
 version: ${project.version}
-main: ${mainClass}
+main: ${main.class}
 author: ${author}
-description: A plugin for running commands on server start.
+description: ${project.description}
 
 commands:
    startup:

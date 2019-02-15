@@ -1,5 +1,6 @@
 package me.mattgd.startupcommands;
 
+import me.mattgd.startupcommands.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 package me.mattgd.startupcommands;
 
+import me.mattgd.startupcommands.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.junit.Before;

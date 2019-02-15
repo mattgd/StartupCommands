@@ -80,10 +80,10 @@ public class MessageManager {
 	 * @param dashColor the color of the dashes
 	 * @return the title header
 	 */
-	String messageTitle(String title, ChatColor textColor, ChatColor dashColor) {
-		int leadTrailLength = (DASH_LENGTH - title.length()) / 2;
-		StringBuilder dashes = new StringBuilder();
-		
+	String messageTitle(String title, final ChatColor textColor, final ChatColor dashColor) {
+		final int leadTrailLength = (DASH_LENGTH - title.length()) / 2;
+		StringBuilder dashes = new StringBuilder(leadTrailLength);
+
 		for (int i = 0; i < leadTrailLength; i++) {
 			dashes.append("-");
 		}
@@ -97,7 +97,7 @@ public class MessageManager {
 	 * @param color the ChatColor of the dashes
 	 * @return a line of dashes as a message footer
 	 */
-	String messageTrail(ChatColor color) {
+	String messageTrail(final ChatColor color) {
 		StringBuilder trail = new StringBuilder("\n" + color);
 		
 		for (int i = 0; i < DASH_LENGTH; i++) {
@@ -115,7 +115,7 @@ public class MessageManager {
 	 * the String at this index (works like substring())
 	 * @return a String of all of the String arguments from start to end
 	 */
-	String assembleMessage(String[] args, int start, int end) {
+	String assembleMessage(String[] args, final int start, final int end) {
 		args = Arrays.copyOfRange(args, start, end);
 		return String.join(" ", args);
 	}

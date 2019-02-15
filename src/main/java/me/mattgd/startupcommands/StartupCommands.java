@@ -17,34 +17,21 @@ public class StartupCommands extends JavaPlugin {
 
     /** The CommandManager instance */
     private CommandManager cmdManager;
-    /** Directory that the server is running from */
-    private File serverDir = new File(System.getProperty("user.dir"));
 
     public StartupCommands() {
-        super();
-    }
-
-    /**
-     * This is used for unit testing.
-     * @param loader The PluginLoader to use.
-     * @param description The Description file to use.
-     * @param dataFolder The folder that other data files can be found in.
-     * @param file The location of the plugin.
-     */
-	public StartupCommands(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-		super(loader, description, dataFolder, file);
+		super();
 	}
 
-    /**
-     * Sets this server's root directory.
-     * @param newServerDirectory The new server-root
-     */
-    public void setServerDirectory(File newServerDirectory) {
-        if (!newServerDirectory.isDirectory())
-            throw new IllegalArgumentException("That's not a folder!");
-
-        this.serverDir = newServerDirectory;
-    }
+	/**
+	 * This is used for unit testing.
+	 * @param loader The PluginLoader to use.
+	 * @param description The Description file to use.
+	 * @param dataFolder The folder that other data files can be found in.
+	 * @param file The location of the plugin.
+	 */
+	StartupCommands(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+		super(loader, description, dataFolder, file);
+	}
 
     /**
      * Enable the StartupCommand plugin.
@@ -64,7 +51,7 @@ public class StartupCommands extends JavaPlugin {
      */
 	@Override
 	public void onDisable() {
-        getServer().getScheduler().cancelAllTasks(); // Cancel scheduled tasks
+        getServer().getScheduler().cancelTasks(this); // Cancel scheduled tasks
 		getConfig().options().copyDefaults(true);
 	}
 	
@@ -126,7 +113,7 @@ public class StartupCommands extends JavaPlugin {
                     }
 
                     // Calculate where the commandString should start to be assembled
-                    int start = 1 + (hasDelay ? 1 : 0);
+                    final int start = 1 + (hasDelay ? 1 : 0);
 					cmdStr = msg.assembleMessage(args, start, args.length);
 					
 					try {
@@ -176,15 +163,12 @@ public class StartupCommands extends JavaPlugin {
 	 */
 	private String helpMessage() {
 		MessageManager msg = MessageManager.getInstance();
-		String msgStr = msg.messageTitle("StartupCommands Help", ChatColor.AQUA, ChatColor.YELLOW);
-		
-		msgStr += "\n&a/sc view &7- &aview the active startup commands and their delay"
+		return msg.messageTitle("StartupCommands Help", ChatColor.AQUA, ChatColor.YELLOW)
+				+ "\n&a/sc view &7- &aview the active startup commands and their delay"
 				+ "\n&a/sc add <command string> <delay> &7- &aadd a startup command"
 				+ "\n&a/sc remove <command ID or exact command string> &7- &aremove a startup command"
-                + "\n&a/sc setdelay <command ID> <delay in seconds> &7- &aset a startup command's delay";
-		
-		msgStr += msg.messageTrail(ChatColor.YELLOW); // Add message trail
-		return msgStr;
+                + "\n&a/sc setdelay <command ID> <delay in seconds> &7- &aset a startup command's delay"
+				+ msg.messageTrail(ChatColor.YELLOW); // Add message trail
 	}
 
     /**
@@ -195,11 +179,10 @@ public class StartupCommands extends JavaPlugin {
     static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
+			return true;
         } catch (NumberFormatException e) {
             return false;
         }
-
-        return true;
     }
 	
 }

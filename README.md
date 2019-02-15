@@ -8,14 +8,16 @@ Add commands in the configuration by following the examples provided, or follow 
 
 ```
 # Add commands below to execute on server startup/reload.
-# Delay is the number of seconds to wait before executing. Use 0 for immediate execution.
+# delay is the number of seconds to wait before executing. Use 0 for immediate execution.
+# notify-on-exec is a boolean value to enable/disable console notifications on command execution.
 commands:
   gamemode 1 TestPlayer:
     delay: 10
+    notify-on-exec: false
   ban TestPlayer:
     delay: 0
-  say This is 1 test message with StartupCommands:
-    delay: 5
+  say This is a test message with StartupCommands:
+    delay: 3
 ```
 
 Please note that normal characters that required escaping in YAML will need to be escaped in the configuration.
@@ -23,8 +25,9 @@ Please note that normal characters that required escaping in YAML will need to b
 ## Commands
 - /startup help - _display StartupCommands command help_
 - /startup view - _view the current startup commands_
-- /startup add (optional delay in seconds) <command string> - _add a command to the startup command list_
-- /startup remove <command string> - _remove a command from the startup command list_
+- /startup add/create (optional delay in seconds) <command string> - _add a command to the startup command list_
+- /startup remove/delete <command string> - _remove a command from the startup command list_
 - /startup run - _manually run the startup commands in the configuration_
+- /startup setdelay <command ID> <delay in seconds> - _set an existing command's delay in seconds_
 
 The permission required for using these commands is: _startupcommands.manage_

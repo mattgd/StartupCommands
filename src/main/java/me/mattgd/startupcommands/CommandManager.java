@@ -75,7 +75,7 @@ public class CommandManager {
 
             // Ensure index is valid
             if (index < 0 || index > commands.size() - 1) {
-                throw new IllegalArgumentException("Index must be greater than 0 and less than the number of startup commands.");
+                throw new IllegalArgumentException("Invalid command index.");
             }
 
             removeStr = commands.remove(index).getCommand();
@@ -87,7 +87,7 @@ public class CommandManager {
 
             return removeStr;
         } else {
-            throw new IllegalArgumentException("Could not identify command to remove by " + removeStr + ".");
+            throw new IllegalArgumentException("No command found matching " + removeStr + ".");
         }
     }
 
@@ -110,7 +110,7 @@ public class CommandManager {
             config.set(CMD_CONFIG_PREFIX + cmdStr + ".delay", delay);
             saveCommandConfig();
         } else {
-            throw new IllegalArgumentException("Could not identify command to set the delay of by " + cmdStr + ".");
+            throw new IllegalArgumentException("No command found matching " + cmdStr + ".");
         }
     }
 
@@ -123,8 +123,8 @@ public class CommandManager {
      */
     private Command getCommand(int id) {
         // Ensure index is valid
-        if (id < 1 || id > commands.size() - 1) {
-            throw new IllegalArgumentException("Index must be greater than 0 and less than the number of startup commands.");
+        if (id < 1 || id > commands.size()) {
+            throw new IllegalArgumentException("Invalid command index.");
         }
 
         return commands.get(id - 1);
