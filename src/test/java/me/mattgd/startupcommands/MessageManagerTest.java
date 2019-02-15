@@ -9,11 +9,11 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests the {@link me.mattgd.startupcommands.MessageManager} class.
+ * Tests the {@link MessageManager} class.
  *
  * @author mattgd
  */
@@ -72,7 +72,7 @@ public class MessageManagerTest {
     }
 
     /**
-     * Tests the {@link me.mattgd.startupcommands.MessageManager#assembleMessage(String[], int, int)} method.
+     * Tests the {@link MessageManager#assembleMessage(String[], int, int)} method.
      */
     @Test
     public void assembleMessage() {
@@ -86,7 +86,7 @@ public class MessageManagerTest {
     }
 
     /**
-     * Tests the {@link me.mattgd.startupcommands.MessageManager#messageTitle(String, ChatColor, ChatColor)} method.
+     * Tests the {@link MessageManager#messageTitle(String, ChatColor, ChatColor)} method.
      */
     @Test
     public void messageTitle() {
@@ -95,7 +95,7 @@ public class MessageManagerTest {
     }
 
     /**
-     * Tests the {@link me.mattgd.startupcommands.MessageManager#messageTrail(ChatColor)} method.
+     * Tests the {@link MessageManager#messageTrail(ChatColor)} method.
      */
     @Test
     public void messageTrail() {

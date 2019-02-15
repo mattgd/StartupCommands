@@ -1,7 +1,9 @@
 package me.mattgd.startupcommands;
 
 import me.mattgd.startupcommands.utils.Util;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -43,14 +45,10 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
- * Tests the {@link me.mattgd.startupcommands.StartupCommands} class.
+ * Tests the {@link StartupCommands} class.
  *
  * @author mattgd
  */
@@ -107,7 +105,7 @@ public class StartupCommandsTest {
             // Return a fake PDF file.
             PluginDescriptionFile pdf = PowerMockito.spy(new PluginDescriptionFile(
                     "StartupCommands", "0.0.6-Test",
-                    "me.mattgd.startupcommands.StartupCommands"));
+                    "StartupCommands"));
             when(pdf.getAuthors()).thenReturn(new ArrayList<String>());
             plugin = PowerMockito.spy(new StartupCommands(mockPluginLoader, pdf, pluginDirectory, new File(pluginDirectory, "testPluginFile")));
 
@@ -189,7 +187,7 @@ public class StartupCommandsTest {
             // Initialize a fake command
             mockCommand = mock(PluginCommand.class);
             when(mockCommand.getName()).thenReturn("startup");
-            doReturn(mockCommand).when(plugin).getCommand(ArgumentMatchers.anyString());
+            doReturn(mockCommand).when(plugin).getCommand(anyString());
 
             plugin.onEnable(); // Enable the plugin
         } catch (Exception e) {
@@ -420,7 +418,7 @@ public class StartupCommandsTest {
     }
 
     /**
-     * Tests the {@link me.mattgd.startupcommands.StartupCommands#isInteger(String)} method.
+     * Tests the {@link StartupCommands#isInteger(String)} method.
      */
     @Test
     public void testIsInteger() {
