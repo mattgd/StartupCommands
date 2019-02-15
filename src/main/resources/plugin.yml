@@ -1,8 +1,8 @@
 name: StartupCommands
 version: ${project.version}
-main: me.mattgd.startupcommands.StartupCommands
-author: mattgd
-description: A plugin for running commands on server start.
+main: ${main.class}
+author: ${author}
+description: ${project.description}
 
 commands:
    startup:

@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
@@ -28,7 +27,6 @@ import org.powermock.core.MockGateway;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
-import sun.plugin.security.PluginClassLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,7 +56,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
  */
 @RunWith(PowerMockRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@PrepareForTest( { Bukkit.class, CommandSender.class, PluginClassLoader.class, PluginDescriptionFile.class, PluginCommand.class, JavaPlugin.class, JavaPluginLoader.class, StartupCommands.class })
+@PrepareForTest({ Bukkit.class, CommandSender.class, PluginDescriptionFile.class, PluginCommand.class, JavaPlugin.class, JavaPluginLoader.class, StartupCommands.class })
 public class StartupCommandsTest {
 
     private StartupCommands plugin;
@@ -118,7 +116,6 @@ public class StartupCommandsTest {
 
             doReturn(true).when(plugin).isEnabled();
             doReturn(Util.logger).when(plugin).getLogger();
-            plugin.setServerDirectory(serverDirectory);
 
             // Add StartupCommands to the list of loaded plugins
             JavaPlugin[] plugins = new JavaPlugin[] { plugin };
@@ -296,8 +293,8 @@ public class StartupCommandsTest {
         assertEquals("§eRemoved startup command: §asay Test1", paramsPassed.get(2));
         assertEquals("§eRemoved startup command: §asay Test2", paramsPassed.get(3));
         assertEquals("§eRemoved startup command: §aban TestPlayer", paramsPassed.get(4));
-        assertEquals("§cCould not identify command to remove by tp notacommand.", paramsPassed.get(5));
-        assertEquals("§cIndex must be greater than 0 and less than the number of startup commands.", paramsPassed.get(6));
+        assertEquals("§cNo command found matching tp notacommand.", paramsPassed.get(5));
+        assertEquals("§cInvalid command index.", paramsPassed.get(6));
     }
 
     /**
@@ -334,7 +331,7 @@ public class StartupCommandsTest {
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(2));
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(3));
         assertEquals("§cUsage: /sc setdelay <command ID> <delay in seconds>", paramsPassed.get(4));
-        assertEquals("§cIndex must be greater than 0 and less than the number of startup commands.", paramsPassed.get(5));
+        assertEquals("§cInvalid command index.", paramsPassed.get(5));
     }
 
     /**

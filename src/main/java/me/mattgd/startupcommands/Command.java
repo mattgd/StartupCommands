@@ -64,9 +64,10 @@ public class Command implements Runnable {
      * @throws IllegalArgumentException if cmdStr is null or empty.
      */
 	void setCommand(String cmdStr) {
-        if (cmdStr == null || cmdStr.isEmpty())
-            throw new IllegalArgumentException("Command string cannot be null or empty.");
-
+        if (cmdStr == null || cmdStr.isEmpty()) {
+			throw new IllegalArgumentException("Command string cannot be null or empty.");
+		}
+        
         this.commandStr = cmdStr;
     }
 

@@ -2,3 +2,6 @@
 /target/
 .idea/
 *.iml
+
+# macOS
+.DS_Store
