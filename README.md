@@ -3,6 +3,8 @@
 
 StartupCommands is a Minecraft server plugin that automatically runs commands on startup with an optional delay.
 
+Tested Minecraft Versions: 1.11, 1.12, 1.13, 1.14, 1.15, 1.16
+
 ## Config
 Add commands in the configuration by following the examples provided, or follow the following example:
 
