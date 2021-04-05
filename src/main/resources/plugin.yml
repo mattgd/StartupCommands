@@ -1,8 +1,9 @@
 name: StartupCommands
-version: ${project.version}
-main: ${main.class}
-author: ${author}
-description: ${project.description}
+version: 0.0.7
+api-version: 1.16
+main: me.mattgd.startupcommands.StartupCommands
+author: mattgd
+description: A Minecraft server plugin that automatically runs commands on startup.
 
 commands:
    startup:
