@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>StartupCommands</groupId>
     <artifactId>StartupCommands</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <name>StartupCommands</name>
     <url>https://github.com/mattgd/StartupCommands</url>
     <description>A Minecraft server plugin that automatically runs commands on startup.</description>
@@ -16,7 +16,7 @@
         <main.class>me.mattgd.startupcommands.StartupCommands</main.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <powermock.version>2.0.0</powermock.version>
-        <spigot.version>1.13.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.16.5-R0.1-SNAPSHOT</spigot.version>
     </properties>
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -40,14 +40,6 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source/>
-                    <target/>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -79,6 +71,13 @@
     </repositories>
     <dependencies>
         <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>
             <version>${powermock.version}</version>
@@ -94,13 +93,6 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--Bukkit API-->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
